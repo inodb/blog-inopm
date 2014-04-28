@@ -1,8 +1,7 @@
 Permissions along absolute path
 ###############################
-:date: 2010-10-03 10:20
+:date: 2018-10-03 10:20
 :tags: bash
-:category: bash
 :slug: rightpath
 :author: Nelson Mandata
 :summary: Get the permissions of a file and its path
