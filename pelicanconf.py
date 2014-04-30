@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 AUTHOR = u'Ino de Bruijn'
-SITENAME = u'Data Trop Cuit'
+SITENAME = u'Ino de Bruijn'
 #SITEURL = 'http://blog.ino.pm'
 
 TIMEZONE = 'Europe/Paris'
@@ -39,12 +39,23 @@ TWITTER_WIDGET_ID = 460780344342364160
 THEME = "pelican-bootstrap3"
 #BOOTSTRAP_THEME = 'readable'
 
-MENUITEMS = (("ino.pm", "http://www.ino.pm"),)
+MENUITEMS = (("About", "http://www.ino.pm"),)
+TIMEZONE = "Europe/Stockholm"
+USE_FOLDER_AS_CATEGORY = True
+DISPLAY_PAGES_ON_MENU = True
+DISPLAY_CATEGORIES_ON_MENU = True
+
+AUTHOR_SAVE_AS = ''
+DIRECT_TEMPLATES = ('tags', 'archives')
 
 # Bootstrap conf
 BOOTSTRAP_NAVBAR_INVERSE = True
 PYGMENTS_STYLE = 'friendly'
-DISPLAY_PAGES_ON_MENU = True
-DISPLAY_CATEGORIES_ON_MENU = False
 SHOW_ARTICLE_CATEGORY = True
-DISPLAY_CATEGORIES_ON_SIDEBAR = True
+DISPLAY_CATEGORIES_ON_SIDEBAR = False
+HIDE_SITENAME = True
+DISPLAY_TAGS_INLINE = True
+TYPOGRIFY = True
+DISPLAY_BREADCRUMBS = False
+#AVATAR = "ola"
+#ABOUT_ME = '<img src="https://1.gravatar.com/avatar/c299bc8a8166b38033cd9258c34360c7?d=https%3A%2F%2Fidenticons.github.com%2Fba823da16b7cb66ed74a55a6bce91f13.png&r=x&s=440" width="220" height="220" alt="Blog logo">'

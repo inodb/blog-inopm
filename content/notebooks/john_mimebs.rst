@@ -2,7 +2,7 @@
 MIMEBS Project
 ==========================================
 :date: 2004-10-03 10:20
-:category: notebooks
+:summary: Assembly and mapping of MIMEBS
 
 Performing assemblies for the `MIMEBS project`_. Working through BILS, mainly
 for John Larsson.

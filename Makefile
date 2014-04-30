@@ -10,7 +10,7 @@ PUBLISHCONF=$(BASEDIR)/publishconf.py
 
 FTP_HOST=ftp.ino.pm
 FTP_USER=ino.pm
-FTP_TARGET_DIR=blog
+FTP_TARGET_DIR=.
 
 SSH_HOST=localhost
 SSH_PORT=22

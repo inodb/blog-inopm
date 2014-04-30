@@ -10,7 +10,7 @@ import sys
 sys.path.append(os.curdir)
 from pelicanconf import *
 
-SITEURL = 'http://blog.ino.pm'
+SITEURL = 'http://www.ino.pm'
 RELATIVE_URLS = False
 
 FEED_ALL_ATOM = 'feeds/all.atom.xml'
@@ -22,3 +22,19 @@ DELETE_OUTPUT_DIRECTORY = True
 
 #DISQUS_SITENAME = ""
 #GOOGLE_ANALYTICS = ""
+
+# Settings for location of files
+ARTICLE_URL = '{category}/{slug}/'
+ARTICLE_SAVE_AS = '{category}/{slug}/index.html'
+CATEGORY_URL = '{slug}/'
+CATEGORY_SAVE_AS = '{slug}/index.html'
+TAG_URL = 'tag/{slug}/'
+TAG_SAVE_AS = 'tag/{slug}/index.html'
+PAGE_URL = '{slug}/'
+PAGE_SAVE_AS = '{slug}/index.html'
+
+# DIRECT_TEMPLATES
+ARCHIVES_URL = 'archives/'
+ARCHIVES_SAVE_AS = 'archives/index.html'
+TAGS_URL = 'tags/'
+TAGS_SAVE_AS = 'tags/index.html'

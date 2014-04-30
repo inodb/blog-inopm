@@ -1,9 +1,9 @@
 Permissions along absolute path
 ###############################
-:date: 2018-10-03 10:20
-:tags: bash
+:date: 2014-01-17
+:tags: bash, linux
 :slug: rightpath
-:author: Nelson Mandata
+:author: Ino de Bruijn
 :summary: Get the permissions of a file and its path
 
 It happens very often that somebody asks me to share a file on our server. To
