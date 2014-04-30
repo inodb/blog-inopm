@@ -39,7 +39,8 @@ TWITTER_WIDGET_ID = 460780344342364160
 THEME = "pelican-bootstrap3"
 #BOOTSTRAP_THEME = 'readable'
 
-MENUITEMS = (("About", "http://www.ino.pm"),)
+MENUITEMS = (("About", "http://www.ino.pm"),
+             ("CV", "http://ino.pm/docs/ino_de_bruijn_cv.pdf"))
 TIMEZONE = "Europe/Stockholm"
 USE_FOLDER_AS_CATEGORY = True
 DISPLAY_PAGES_ON_MENU = True
