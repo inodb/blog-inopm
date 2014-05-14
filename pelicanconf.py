@@ -58,5 +58,6 @@ HIDE_SITENAME = True
 DISPLAY_TAGS_INLINE = True
 TYPOGRIFY = True
 DISPLAY_BREADCRUMBS = False
+HIDE_SIDEBAR = True
 #AVATAR = "ola"
 #ABOUT_ME = '<img src="https://1.gravatar.com/avatar/c299bc8a8166b38033cd9258c34360c7?d=https%3A%2F%2Fidenticons.github.com%2Fba823da16b7cb66ed74a55a6bce91f13.png&r=x&s=440" width="220" height="220" alt="Blog logo">'
