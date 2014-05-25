@@ -1,8 +1,10 @@
 ==========================================
 MIMEBS Project
 ==========================================
-:date: 2004-10-03 10:20
+:date: 2014-05-01 00:00
 :summary: Assembly and mapping of MIMEBS
+:start_date: 2013-11-01
+:end_date: 2014-05-31
 
 Performing assemblies for the `MIMEBS project`_. Working through BILS, mainly
 for John Larsson.
