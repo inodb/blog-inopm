@@ -1,0 +1,28 @@
+{% extends "index.html" %}
+{% block title %}{{ category }} - {{ SITENAME }}{% endblock %}
+{% block breadcrumbs %}
+<h1>{{ category|capitalize }}</h1>
+{% if category == "notebooks" %}
+These notebooks contain notes from projects that I have been working on.
+Some may be password protected because I did not get permission to share
+the information with the world (yet). I use it to share commands that I
+ran on particular projects that might be useful to others and for myself as
+a log book. Most things here will be unreadable unless you were involved in
+the project, but drop me a note if you see something in one of the notes
+that be useful to you on either <a
+    href="http://twitter.com/inodb">twitter</a> or on mail at x at y dot pm
+where x equals y and y equals ino.
+{% endif %}
+{% if category == "blog" %}
+This blog contains random ramblings mostly related to bioinformatics and is
+intended for a non-coprophagous audience. As one can see from the small
+number of posts this part of the website is still under construction.
+{% endif %}
+    {% if DISPLAY_BREADCRUMBS %}
+    <ol class="breadcrumb">
+        <li><a href="{{ SITEURL }}" title="{{ SITENAME }}"><i class="fa fa-home fa-lg"></i></a></li>
+        <li><a href="{{ SITEURL}}/{{ CATEGORIES_URL }}" title="{{ SITENAME }} Categories">Categories</a></li>
+        <li class="active">{{ category }}</li>
+    </ol>
+    {% endif %}
+{% endblock %}
