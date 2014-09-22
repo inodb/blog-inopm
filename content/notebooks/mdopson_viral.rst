@@ -4,10 +4,13 @@ M Dopson Viral Metagenomes Project
 :date: 2014-05-31 00:00
 :summary: Viral metagenomes assemblies
 :start_date: 2014-03-21
-:end_date: 2014-05-31
+:end_date: 2014-09-31
 
 Performing assemblies, mappings and some analysis for viral metagenomes. It
-uses a lot of the `metassemble`_ scripts.
+uses a lot of the `metassemble`_ scripts
+
+**UPDATE 2014-09** Started doing binning with CONCOCT as well. Selecting only those bins which have no
+microbial Single Copy Genes (SCGs).
 
 
 Google docs
@@ -86,7 +89,7 @@ Mapping
 
 After the assemblies all reads were mapped back against every merged assembly::
 
-    cd assemblies
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`
     for p in P911_10{1,2,3,4,5,6}; do
         mkdir -p $p/newbler/map
@@ -103,6 +106,44 @@ After the assemblies all reads were mapped back against every merged assembly::
         cd $d
     done
 
+Binning
+========================
+
+We wanted to run CONCOCT and get only those bins out that don't have any microbial Single Copy Genes. Hopefully these
+represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
+
+1. Cut up the assembly in 10K chunks::
+
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
+    for d in P911_10{1,2,3,4,5,6}; do
+        mkdir -p $d/newbler/concoct/cut_up_10K
+        time python ~inod/glob/src/CONCOCT/scripts/cut_up_fasta.py -c 10000 -o 0 \
+            -m $d/newbler/454AllContigs.fna > $d/newbler/concoct/cut_up_10K/contigs_c10K.fa &
+    done
+
+2. Rerun mapping on new contigs::
+
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
+    d=`pwd`
+    for p in P911_10{1,2,3,4,5,6}; do
+        mkdir -p $p/newbler/concoct/map
+        cd $p/newbler/concoct/map
+        cp ../cut_up_10K/contigs_c10K.fa .
+        bowtie2-build contigs_c10K.fa contigs_c10K.fa
+        for s in /proj/b2013127/INBOX/M.Dopson_13_05/P911_*/*/*_1.fastq.gz; do
+            mkdir -p ${s##*/}
+            cd ${s##*/}
+            ls bowtie2/asm_pair-smds.coverage || \
+                sbatch -A b2013127 -t 01-00:00:00 -J mdopson-map-$p -p core -n 4 ~/bin/sbatch_job \
+                bash $METASSEMBLE_DIR/scripts/map/map-bowtie2-markduplicates.sh -ct 4 $s ${s/_1.fastq/_2.fastq} \
+                pair ../contigs_c10K.fa asm bowtie2
+            cd ..
+        done
+        cd $d
+    done
+
+
 .. _Lindgren: https://www.pdc.kth.se/resources/computers/lindgren
 .. _metassemble: https://github.com/inodb/metassemble
 .. _Assembly stats: https://docs.google.com/spreadsheet/ccc?key=0Ammr7cdGTJzgdG4tb2tfMGpsX1UxeWlYX0pEaFQ5RGc&usp=drive_web#gid=0
+.. _complete example: https://concoct.readthedocs.org/en/latest/complete_example.html
