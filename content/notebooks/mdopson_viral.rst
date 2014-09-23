@@ -156,6 +156,23 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
         cd $d
     done
 
+4. Run CONCOCT with different minimum contig lengths::
+
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
+    d=`pwd`;
+    for p in P911_10{1,2,3,4,5,6}; do
+        cd $p/newbler/concoct
+        for co in 700 1000 2000 3000; do
+            grep -q 'FINISHED' concoct-output-$co-slurm.out ||
+                sbatch -A b2013127 -p core -n 5 -t 1-00:00:00 -J $p_concoct_$co \
+                    --output=concoct-output-$co-slurm.out ~/bin/sbatch_job concoct \
+                    -l $co -c 400 -k 4 --coverage_file concoct-input/concoct_inputtableR.tsv \
+                    --composition_file map/contigs_c10K.fa -b concoct-output-$co/
+        done
+        cd $d
+    done
+
+
 .. _Lindgren: https://www.pdc.kth.se/resources/computers/lindgren
 .. _metassemble: https://github.com/inodb/metassemble
 .. _Assembly stats: https://docs.google.com/spreadsheet/ccc?key=0Ammr7cdGTJzgdG4tb2tfMGpsX1UxeWlYX0pEaFQ5RGc&usp=drive_web#gid=0
