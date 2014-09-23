@@ -164,7 +164,7 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
         cd $p/newbler/concoct
         for co in 700 1000 2000 3000; do
             grep -q 'FINISHED' concoct-output-$co-slurm.out ||
-                sbatch -A b2013127 -p core -n 5 -t 1-00:00:00 -J $p_concoct_$co \
+                sbatch -A b2013127 -p core -n 5 -t 1-00:00:00 -J $p-concoct-$co \
                     --output=concoct-output-$co-slurm.out ~/bin/sbatch_job concoct \
                     -l $co -c 400 -k 4 --coverage_file concoct-input/concoct_inputtableR.tsv \
                     --composition_file map/contigs_c10K.fa -b concoct-output-$co/
