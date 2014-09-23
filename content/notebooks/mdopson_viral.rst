@@ -142,6 +142,19 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
         cd $d
     done
 
+3. Generate input tables for CONCOCT::
+
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
+    d=`pwd`;
+    for p in P911_10{1,2,3,4,5,6}; do
+        mkdir -p $p/newbler/concoct/concoct-input
+        cd $p/newbler/concoct/concoct-input
+        time python ~/glob/src/CONCOCT/scripts/gen_input_table.py \
+            --samplenames <(for c in ../map/*/bowtie2/asm_pair-smds.coverage; do echo $c | cut -d/ -f3; done) \
+            --isbedfiles ../map/contigs_c10K.fa ../map/*/bowtie2/asm_pair-smds.coverage > concoct_inputtable.tsv
+        cut -f1,3-26 concoct_inputtable.tsv > concoct_inputtableR.tsv
+        cd $d
+    done
 
 .. _Lindgren: https://www.pdc.kth.se/resources/computers/lindgren
 .. _metassemble: https://github.com/inodb/metassemble
