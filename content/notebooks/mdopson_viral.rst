@@ -172,6 +172,25 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
         cd $d
     done
 
+5. Run prodigal and rpsblast for each sample::
+
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
+    d=`pwd`;
+    for p in P911_10{1,2,3,4,5,6}; do
+        cd $p/newbler/concoct
+        mkdir -p annotations/cog-annotations/ annotations/proteins/
+        sbatch --output=annotations/cog-annotations/rpsblast.out-slurm.out \
+            -A b2013127 -J rpsblast_$p -t 1-00:00:00 -p core -n 1 \
+            ~/bin/sbatch_job \
+            prodigal -a annotations/proteins/contigs_c10K.faa \
+            -i map/contigs_c10K.fa -f gff -p meta '>' \
+            annotations/proteins/contigs_c10K.gff '&&' \
+            rpsblast -outfmt \
+            "'6 qseqid sseqid evalue pident score qstart qend sstart send length slen'" \
+            -max_target_seqs 1 -evalue 0.001 -query annotations/proteins/contigs_c10K.faa \
+            -db '/proj/b2010008/nobackup/database/cog_le/Cog' -out annotations/cog-annotations/rpsblast.out
+        cd $d
+    done
 
 .. _Lindgren: https://www.pdc.kth.se/resources/computers/lindgren
 .. _metassemble: https://github.com/inodb/metassemble
