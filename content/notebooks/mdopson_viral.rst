@@ -218,13 +218,24 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
     mkdir -p report
     d=`pwd`;
     (
-        echo "<html><head></head><body>"
+        echo "<html><head><style>body { text-align: center }</style></head><body>"
         for p in P911_10{1,2,3,4,5,6}; do
             echo "<h1>$p</h1>"
             for co in 700 1000 2000 3000; do
-            echo "<h3>$p cut off $co</h3>"
-            echo "<img alt=\"\" src=\"data:image/svg+xml;base64,$(base64 -w0 $p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.svg)\" />"
-            #echo "<img src=\"../$p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.svg\" />"
+                echo "<h3>$p cut off $co</h3>"
+                echo "<img alt=\"\" src=\"data:image/svg+xml;base64,$(base64 -w0 $p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.svg)\" />"
+                #echo "<img src=\"../$p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.svg\" />"
+                echo "<br />"
+                echo -n "Number of clusters with COG hit: "
+                cat $p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.tab | \
+                    cut -f1,4- | tail -n +2 | py -fx 'sum(map(int, x.split()[1:])) > 0' \
+                    | wc -l
+                echo "<br />"
+                echo -n "Number of clusters without COG hit: "
+                cat $p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.tab | \
+                    cut -f1,4- | tail -n +2 | py -fx 'sum(map(int, x.split()[1:])) == 0' \
+                    | wc -l
+                echo "<br />"
             done
             cd $d
         done
@@ -242,15 +253,15 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
         cd $p/newbler/concoct
         mkdir -p annotations/pog-annotations/ 
         sbatch --output=annotations/pog-annotations/blastp.out-slurm.out \
-            -A b2013127 -J poghighvq_blastp_$p -t 1-00:00:00 -p core -n 1 \
+            -A b2013127 -J poghighvq_blastp_$p -t 1-00:00:00 -p core -n 16 \
             ~/bin/sbatch_job \
+            cat annotations/proteins/contigs_c10K.faa '|' \
+            parallel --pipe --recstart "'>'" -N10000 \
             blastp -outfmt \
-            "'6 qseqid sseqid evalue pident score qstart qend sstart send length slen'" \
-            -num_threads 1 \
-            -max_target_seqs 1 -evalue 0.0001 \
-            -query annotations/proteins/contigs_c10K.faa \
+            "\"'6 qseqid sseqid evalue pident score qstart qend sstart send length slen'\"" \
+            -num_threads  1 -max_target_seqs 1 -evalue 0.0001 -query - \
             -db /proj/b2010008/nobackup/database/pog/thousandgenomespogs/blastdb/POGseqs_HighVQ \
-            -out annotations/pog-annotations/blastp_highVQ.out
+            '>' annotations/pog-annotations/blastp_highVQ.out
         cd $d
     done
     
@@ -262,13 +273,13 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
         sbatch --output=annotations/pog-annotations/blastp.out-slurm.out \
             -A b2013127 -J pogallvq_blastp_$p -t 1-00:00:00 -p core -n 1 \
             ~/bin/sbatch_job \
+            cat annotations/proteins/contigs_c10K.faa '|' \
+            parallel --pipe --recstart "'>'" -N10000 \
             blastp -outfmt \
-            "'6 qseqid sseqid evalue pident score qstart qend sstart send length slen'" \
-            -num_threads 1 \
-            -max_target_seqs 1 -evalue 0.0001 \
-            -query annotations/proteins/contigs_c10K.faa \
+            "\"'6 qseqid sseqid evalue pident score qstart qend sstart send length slen'\"" \
+            -num_threads  1 -max_target_seqs 1 -evalue 0.0001 -query - \
             -db /proj/b2010008/nobackup/database/pog/thousandgenomespogs/blastdb/POGseqs \
-            -out annotations/pog-annotations/blastp_allVQ.out
+            '>' annotations/pog-annotations/blastp_allVQ.out
         cd $d
     done
 
