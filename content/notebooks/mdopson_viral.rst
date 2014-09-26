@@ -245,8 +245,8 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
             -A b2013127 -J poghighvq_blastp_$p -t 1-00:00:00 -p core -n 5 \
             ~/bin/sbatch_job \
             blastp -outfmt \
-            -num_threads 5 \
             "'6 qseqid sseqid evalue pident score qstart qend sstart send length slen'" \
+            -num_threads 5 \
             -max_target_seqs 1 -evalue 0.0001 \
             -query annotations/proteins/contigs_c10K.faa \
             -db /proj/b2010008/nobackup/database/pog/thousandgenomespogs/blastdb/POGVQseqs_HighVQ \
@@ -263,8 +263,8 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
             -A b2013127 -J pogallvq_blastp_$p -t 1-00:00:00 -p core -n 5 \
             ~/bin/sbatch_job \
             blastp -outfmt \
-            -num_threads 5 \
             "'6 qseqid sseqid evalue pident score qstart qend sstart send length slen'" \
+            -num_threads 5 \
             -max_target_seqs 1 -evalue 0.0001 \
             -query annotations/proteins/contigs_c10K.faa \
             -db /proj/b2010008/nobackup/database/pog/thousandgenomespogs/blastdb/POGVQseqs \
