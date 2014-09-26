@@ -249,7 +249,7 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
             -num_threads 5 \
             -max_target_seqs 1 -evalue 0.0001 \
             -query annotations/proteins/contigs_c10K.faa \
-            -db /proj/b2010008/nobackup/database/pog/thousandgenomespogs/blastdb/POGVQseqs_HighVQ \
+            -db /proj/b2010008/nobackup/database/pog/thousandgenomespogs/blastdb/POGseqs_HighVQ \
             -out annotations/pog-annotations/blastp_highVQ.out
         cd $d
     done
@@ -267,7 +267,7 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
             -num_threads 5 \
             -max_target_seqs 1 -evalue 0.0001 \
             -query annotations/proteins/contigs_c10K.faa \
-            -db /proj/b2010008/nobackup/database/pog/thousandgenomespogs/blastdb/POGVQseqs \
+            -db /proj/b2010008/nobackup/database/pog/thousandgenomespogs/blastdb/POGseqs \
             -out annotations/pog-annotations/blastp_allVQ.out
         cd $d
     done
