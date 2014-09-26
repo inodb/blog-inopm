@@ -192,6 +192,47 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
         cd $d
     done
 
+6. Do a similar BLAST against `POG`_ database to check for viral bins. Run `POG`_ annotations
+   on all assemblies both HighVQ (Viral Quotient) and all VQ. A Viral Quotient of 1 
+   indicates it is never found in prokaryotic genomes outside prophage regions::
+
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
+    d=`pwd`;
+    for p in P911_10{1,2,3,4,5,6}; do
+        cd $p/newbler/concoct
+        mkdir -p annotations/pog-annotations/ 
+        sbatch --output=annotations/pog-annotations/blastp.out-slurm.out \
+            -A b2013127 -J poghighvq_blastp_$p -t 1-00:00:00 -p core -n 5 \
+            ~/bin/sbatch_job \
+            blastp -outfmt \
+            -num_threads 5 \
+            "'6 qseqid sseqid evalue pident score qstart qend sstart send length slen'" \
+            -max_target_seqs 1 -evalue 0.0001 \
+            -query annotations/proteins/contigs_c10K.faa \
+            -db /proj/b2010008/nobackup/database/pog/thousandgenomespogs/blastdb/POGVQseqs_HighVQ \
+            -out annotations/pog-annotations/blastp_highVQ.out
+        cd $d
+    done
+    
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
+    d=`pwd`;
+    for p in P911_10{1,2,3,4,5,6}; do
+        cd $p/newbler/concoct
+        mkdir -p annotations/pog-annotations/ 
+        sbatch --output=annotations/pog-annotations/blastp.out-slurm.out \
+            -A b2013127 -J pogallvq_blastp_$p -t 1-00:00:00 -p core -n 5 \
+            ~/bin/sbatch_job \
+            blastp -outfmt \
+            -num_threads 5 \
+            "'6 qseqid sseqid evalue pident score qstart qend sstart send length slen'" \
+            -max_target_seqs 1 -evalue 0.0001 \
+            -query annotations/proteins/contigs_c10K.faa \
+            -db /proj/b2010008/nobackup/database/pog/thousandgenomespogs/blastdb/POGVQseqs \
+            -out annotations/pog-annotations/blastp_allVQ.out
+        cd $d
+    done
+
+.. _POG: http://www.ncbi.nlm.nih.gov/COG/
 .. _Lindgren: https://www.pdc.kth.se/resources/computers/lindgren
 .. _metassemble: https://github.com/inodb/metassemble
 .. _Assembly stats: https://docs.google.com/spreadsheet/ccc?key=0Ammr7cdGTJzgdG4tb2tfMGpsX1UxeWlYX0pEaFQ5RGc&usp=drive_web#gid=0
