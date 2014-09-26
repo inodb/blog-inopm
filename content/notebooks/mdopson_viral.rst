@@ -162,7 +162,7 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
     d=`pwd`;
     for p in P911_10{1,2,3,4,5,6}; do
         cd $p/newbler/concoct
-        for co in 700 1000 2000 3000; do
+        for co in 300 500 700 1000 2000 3000; do
             grep -q 'FINISHED' concoct-output-$co-slurm.out ||
                 sbatch -A b2013127 -p core -n 5 -t 1-00:00:00 -J $p-concoct-$co \
                     --output=concoct-output-$co-slurm.out ~/bin/sbatch_job concoct \
@@ -192,7 +192,47 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
         cd $d
     done
 
-6. Do a similar BLAST against `POG`_ database to check for viral bins. Run `POG`_ annotations
+6. Generate COGPlots for all samples and cut offs::
+
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
+    d=`pwd`;
+    for p in P911_10{1,2,3,4,5,6}; do
+        mkdir -p $p/newbler/concoct/evaluation-output
+        for co in 700 1000 2000 3000; do
+            python /glob/inod/src/CONCOCT/scripts/COG_table.py \
+                -b $p/newbler/concoct/annotations/cog-annotations/rpsblast.out \
+                -m /glob/inod/src/CONCOCT/scgs/scg_cogs_min0.97_max1.03_unique_genera.txt \
+                -c $p/newbler/concoct/concoct-output-$co/clustering_gt$co.csv \
+                --cdd_cog_file /glob/inod/src/CONCOCT/scgs/cdd_to_cog.tsv \
+                > $p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.tab
+            Rscript /glob/inod/src/CONCOCT/scripts/COGPlot.R \
+                -s $p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.tab \
+                -o $p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.svg
+        done
+        cd $d
+    done
+
+7. Make a HTML report of all SCG Plots::
+
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
+    mkdir -p report
+    d=`pwd`;
+    (
+        echo "<html><head></head><body>"
+        for p in P911_10{1,2,3,4,5,6}; do
+            echo "<h1>$p</h1>"
+            for co in 700 1000 2000 3000; do
+            echo "<h3>$p cut off $co</h3>"
+            echo "<img alt=\"\" src=\"data:image/svg+xml;base64,$(base64 -w0 $p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.svg)\" />"
+            #echo "<img src=\"../$p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.svg\" />"
+            done
+            cd $d
+        done
+        echo "</body></html>"
+    ) > report/scg_plots.html
+
+
+8. Do a similar BLAST against `POG`_ database to check for viral bins. Run `POG`_ annotations
    on all assemblies both HighVQ (Viral Quotient) and all VQ. A Viral Quotient of 1 
    indicates it is never found in prokaryotic genomes outside prophage regions::
 
