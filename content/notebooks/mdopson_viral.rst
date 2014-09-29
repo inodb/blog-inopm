@@ -198,7 +198,7 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
     d=`pwd`;
     for p in P911_10{1,2,3,4,5,6}; do
         mkdir -p $p/newbler/concoct/evaluation-output
-        for co in 700 1000 2000 3000; do
+        for co in 300 500 700 1000 2000 3000; do
             python /glob/inod/src/CONCOCT/scripts/COG_table.py \
                 -b $p/newbler/concoct/annotations/cog-annotations/rpsblast.out \
                 -m /glob/inod/src/CONCOCT/scgs/scg_cogs_min0.97_max1.03_unique_genera.txt \
@@ -221,10 +221,11 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
         echo "<html><head><style>body { text-align: center }</style></head><body>"
         for p in P911_10{1,2,3,4,5,6}; do
             echo "<h1>$p</h1>"
-            for co in 700 1000 2000 3000; do
+            for co in 300 500 700 1000 2000 3000; do
                 echo "<h3>$p cut off $co</h3>"
-                echo "<img alt=\"\" src=\"data:image/svg+xml;base64,$(base64 -w0 $p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.svg)\" />"
-                #echo "<img src=\"../$p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.svg\" />"
+                mkdir -p report/$p/newbler/concoct/evaluation-output/
+                cp $p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.{tab,svg} report/$p/newbler/concoct/evaluation-output/
+                echo "<img src=\"$p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.svg\" />"
                 echo "<br />"
                 echo -n "Number of clusters with COG hit: "
                 cat $p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.tab | \
