@@ -310,20 +310,20 @@ Generate the POG html plots::
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`;
-    for p in P911_10{1,2,3,4,5,6}; do
-        mkdir -p $p/newbler/concoct/evaluation-output
-        for co in 300 500 700 1000 2000 3000; do
-            python /glob/inod/github/concoct-inodb/scripts/POG_plot.py \
-                -c $p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_highVQ.tab \
-                -o $p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_highVQ.html \
-                --title "$p $co POG high VQ hits per cluster"
-            python /glob/inod/github/concoct-inodb/scripts/POG_plot.py \
-                -c $p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_allVQ.tab \
-                -o $p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_allVQ.html \
-                --title "$p $co POG all VQ hits per cluster"
+    (
+        for p in P911_10{1,2,3,4,5,6}; do
+            mkdir -p $p/newbler/concoct/evaluation-output
+            for co in 300 500 700 1000 2000 3000; do
+                echo python /glob/inod/github/concoct-inodb/scripts/POG_plot.py \
+                    -c $p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_highVQ.tab \
+                    -o $p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_highVQ.html
+                echo python /glob/inod/github/concoct-inodb/scripts/POG_plot.py \
+                    -c $p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_allVQ.tab \
+                    -o $p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_allVQ.html
+            done
+            cd $d
         done
-        cd $d
-    done
+    ) | parallel
 
 Create a POG HTML file for the report for easy access of the different POG plots::
 
