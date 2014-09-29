@@ -112,7 +112,7 @@ Binning
 We wanted to run CONCOCT and get only those bins out that don't have any microbial Single Copy Genes. Hopefully these
 represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
 
-1. Cut up the assembly in 10K chunks::
+Cut up the assembly in 10K chunks::
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     for d in P911_10{1,2,3,4,5,6}; do
@@ -121,7 +121,7 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
             -m $d/newbler/454AllContigs.fna > $d/newbler/concoct/cut_up_10K/contigs_c10K.fa &
     done
 
-2. Rerun mapping on new contigs::
+Rerun mapping on new contigs::
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`
@@ -142,7 +142,7 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
         cd $d
     done
 
-3. Generate input tables for CONCOCT::
+Generate input tables for CONCOCT::
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`;
@@ -156,7 +156,7 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
         cd $d
     done
 
-4. Run CONCOCT with different minimum contig lengths::
+Run CONCOCT with different minimum contig lengths::
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`;
@@ -172,7 +172,7 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
         cd $d
     done
 
-5. Run prodigal and rpsblast for each sample::
+Run prodigal and rpsblast for each sample::
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`;
@@ -192,7 +192,7 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
         cd $d
     done
 
-6. Generate COGPlots for all samples and cut offs::
+Generate COGPlots for all samples and cut offs::
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`;
@@ -212,7 +212,7 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
         cd $d
     done
 
-7. Make a HTML report of all SCG Plots::
+Make a HTML report of all SCG Plots::
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     mkdir -p report
@@ -227,6 +227,7 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
                 cp $p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.{tab,svg} report/$p/newbler/concoct/evaluation-output/
                 echo "<img src=\"$p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.svg\" />"
                 echo "<br />"
+                echo "<a href=\"$p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.tab\">tsv</a><br />"
                 echo -n "Number of clusters with COG hit: "
                 cat $p/newbler/concoct/evaluation-output/clustering_gt${co}_scg.tab | \
                     cut -f1,4- | tail -n +2 | py -fx 'sum(map(int, x.split()[1:])) > 0' \
@@ -244,7 +245,7 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
     ) > report/scg_plots.html
 
 
-8. Do a similar BLAST against `POG`_ database to check for viral bins. Run `POG`_ annotations
+Do a similar BLAST against `POG`_ database to check for viral bins. Run `POG`_ annotations
    on all assemblies both HighVQ (Viral Quotient) and all VQ. A Viral Quotient of 1 
    indicates it is never found in prokaryotic genomes outside prophage regions::
 
@@ -283,6 +284,69 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
             '>' annotations/pog-annotations/blastp_allVQ.out
         cd $d
     done
+    
+Generate the cluster vs POG count tables::
+
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
+    d=`pwd`;
+    for p in P911_10{1,2,3,4,5,6}; do
+        mkdir -p $p/newbler/concoct/evaluation-output
+        for co in 300 500 700 1000 2000 3000; do
+            python /glob/inod/github/concoct-inodb/scripts/POG_table.py \
+                -b $p/newbler/concoct/annotations/pog-annotations/blastp_allVQ.out \
+                -c /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies/$p/newbler/concoct/concoct-output-$co/clustering_gt$co.csv \
+                --protein_pog_file /glob/inod/github/concoct-inodb/pogs/protein_pog.tsv \
+                > $p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_allVQ.tab
+            python /glob/inod/github/concoct-inodb/scripts/POG_table.py \
+                -b $p/newbler/concoct/annotations/pog-annotations/blastp_highVQ.out \
+                -c /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies/$p/newbler/concoct/concoct-output-$co/clustering_gt$co.csv \
+                --protein_pog_file /glob/inod/github/concoct-inodb/pogs/protein_pog.tsv \
+                > $p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_highVQ.tab
+        done
+        cd $d
+    done
+
+Generate the POG html plots::
+
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
+    d=`pwd`;
+    for p in P911_10{1,2,3,4,5,6}; do
+        mkdir -p $p/newbler/concoct/evaluation-output
+        for co in 300 500 700 1000 2000 3000; do
+            python /glob/inod/github/concoct-inodb/scripts/POG_plot.py \
+                -c $p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_highVQ.tab \
+                -o $p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_highVQ.html \
+                --title "$p $co POG high VQ hits per cluster"
+            python /glob/inod/github/concoct-inodb/scripts/POG_plot.py \
+                -c $p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_allVQ.tab \
+                -o $p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_allVQ.html \
+                --title "$p $co POG all VQ hits per cluster"
+        done
+        cd $d
+    done
+
+Create a POG HTML file for the report for easy access of the different POG plots::
+
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
+    mkdir -p report
+    d=`pwd`;
+    (
+        echo "<html><head><style>body { text-align: center }</style></head><body>"
+        for p in P911_10{1,2,3,4,5,6}; do
+            echo "<h1>$p</h1>"
+            for co in 300 500 700 1000 2000 3000; do
+                echo "<h3>$p cut off $co</h3>"
+                mkdir -p report/$p/newbler/concoct/evaluation-output/
+                cp $p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_{allVQ,highVQ}.{tab,html} report/$p/newbler/concoct/evaluation-output/
+                echo "<a href=\"$p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_allVQ.tab\">all VQ tsv</a><br />"
+                echo "<a href=\"$p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_allVQ.html\">all VQ html plot</a><br />"
+                echo "<a href=\"$p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_highVQ.tab\">high VQ tsv</a><br />"
+                echo "<a href=\"$p/newbler/concoct/evaluation-output/clustering_gt${co}_pog_highVQ.html\">high VQ html plot</a><br />"
+            done
+            cd $d
+        done
+        echo "</body></html>"
+    ) > report/pog_plots.html
 
 .. _POG: http://www.ncbi.nlm.nih.gov/COG/
 .. _Lindgren: https://www.pdc.kth.se/resources/computers/lindgren
