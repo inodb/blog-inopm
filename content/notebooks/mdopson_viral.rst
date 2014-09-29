@@ -246,8 +246,8 @@ Make a HTML report of all SCG Plots::
 
 
 Do a similar BLAST against `POG`_ database to check for viral bins. Run `POG`_ annotations
-   on all assemblies both HighVQ (Viral Quotient) and all VQ. A Viral Quotient of 1 
-   indicates it is never found in prokaryotic genomes outside prophage regions::
+on all assemblies both HighVQ (Viral Quotient) and all VQ. A Viral Quotient of 1 
+indicates it is never found in prokaryotic genomes outside prophage regions::
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`;
