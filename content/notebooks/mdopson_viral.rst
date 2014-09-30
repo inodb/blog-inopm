@@ -20,13 +20,15 @@ Google docs
 
 Assemblies
 ============
-Performed assemblies with Ray on `Lindgren`_ over kmers 31 to 81 with a stepsize of 10. First copied the files::
-    
+Performed assemblies with Ray on `Lindgren`_ over kmers 31 to 81 with a stepsize of 10. First copied the files:
+
+.. code-block:: bash
+
     rsync -va xxxx@xxxx.xxxx.xxx:/proj/b2013127/INBOX/M.Dopson_13_05/ .
 
 Directory structure like that:
 
-.. code:: bash
+.. code-block:: bash
     
     $ ls
     assemblies
@@ -39,7 +41,7 @@ Directory structure like that:
 
 First did assemblies for P911_101, P911_102 and P911_106:
 
-.. code:: bash
+.. code-block:: bash
     
     cd assemlies
     for d in ../P911_10{1,2,6}; do
@@ -56,7 +58,7 @@ It uses two libraries, since those were resequenced. The wrapper_jobscript
 executes whatever is in the ``QSUB_ARGUMENTS`` variable. Similarly for
 P911_103, P911_104, P911_105, but with one library:
 
-.. code:: bash
+.. code-block:: bash
 
     for d in ../P911_10{3,4,5}; do
         reads=( $d/*/5_*.fastq.gz )
@@ -71,13 +73,13 @@ P911_103, P911_104, P911_105, but with one library:
 
 Copied the files back to the original server:
 
-.. code:: bash
+.. code-block:: bash
 
     rsync -va assemblies xxxx@xxx:/proj/b2013127/nobackup/projects/M.Dopson_13_05/
 
 Then combined the different kmer assemblies using Newbler:
 
-.. code:: bash
+.. code-block:: bash
     
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     for dir in P911_{101,102,103,104,105,106}; do
@@ -90,7 +92,7 @@ Then combined the different kmer assemblies using Newbler:
 
 Which results in the following assemblies:
 
-.. code:: bash
+.. code-block:: bash
 
     $ ls */newbler/454AllContigs.fna
     P911_101/newbler/454AllContigs.fna  P911_103/newbler/454AllContigs.fna  P911_105/newbler/454AllContigs.fna
@@ -101,7 +103,7 @@ Mapping
 
 After the assemblies all reads were mapped back against every merged assembly:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`
@@ -128,7 +130,7 @@ represent viral bins. Follows the `complete example`_ of the CONCOCT repository.
 
 Cut up the assembly in 10K chunks:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     for d in P911_10{1,2,3,4,5,6}; do
@@ -139,7 +141,7 @@ Cut up the assembly in 10K chunks:
 
 Rerun mapping on new contigs:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`
@@ -162,7 +164,7 @@ Rerun mapping on new contigs:
 
 Generate input tables for CONCOCT:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`;
@@ -178,7 +180,7 @@ Generate input tables for CONCOCT:
 
 Run CONCOCT with different minimum contig lengths:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`;
@@ -196,7 +198,7 @@ Run CONCOCT with different minimum contig lengths:
 
 Run prodigal and rpsblast for each sample:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`;
@@ -218,7 +220,7 @@ Run prodigal and rpsblast for each sample:
 
 Generate COGPlots for all samples and cut offs:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`;
@@ -240,7 +242,7 @@ Generate COGPlots for all samples and cut offs:
 
 Make a HTML report of all SCG Plots:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     mkdir -p report
@@ -277,7 +279,7 @@ Do a similar BLAST against `POG`_ database to check for viral bins. Run `POG`_ a
 on all assemblies both HighVQ (Viral Quotient) and all VQ. A Viral Quotient of 1 
 indicates it is never found in prokaryotic genomes outside prophage regions:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`;
@@ -317,7 +319,7 @@ indicates it is never found in prokaryotic genomes outside prophage regions:
     
 Generate the cluster vs POG count tables:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`;
@@ -340,7 +342,7 @@ Generate the cluster vs POG count tables:
 
 Generate the POG html plots:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     d=`pwd`;
@@ -361,7 +363,7 @@ Generate the POG html plots:
 
 Create a POG HTML file for the report for easy access of the different POG plots:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
     mkdir -p report
