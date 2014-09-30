@@ -35,7 +35,9 @@ Directory structure like that::
     P911_105
     P911_106
 
-First did assemblies for P911_101, P911_102 and P911_106::
+First did assemblies for P911_101, P911_102 and P911_106:
+
+.. code:: bash
     
     cd assemlies
     for d in ../P911_10{1,2,6}; do
