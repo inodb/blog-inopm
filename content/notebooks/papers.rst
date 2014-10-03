@@ -3,8 +3,6 @@ Notes on papers
 ==========================================
 :date: 2014-10-01 00:00
 :summary: Short notes on read papers
-:start_date: 2014-10-01
-:end_date: 2015-10-01
 
 Othologous Gene Clusters and Taxon Signature Genes for Viruses of Prokaryotes (2013)
 ====================================================================================
@@ -37,9 +35,10 @@ Summary
 
 
 Personal Notes
+
 - *Bacillus* phage G, largest known phage genome - Two methods of viral
   reproduction: lysogenic cycle and lytic cycle - Caudoviralis (caudo means
   tail, order of viruses). No sequence similarity for DNA or amino acids of
   families in that order, just morphology.
-- `Inovirus <http://viralzone.expasy.org/all_by_species/558.html>` (nos means
+- `Inovirus <http://viralzone.expasy.org/all_by_species/558.html>`_ (nos means
   muscle in Greek). ssVirus
