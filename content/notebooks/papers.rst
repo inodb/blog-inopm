@@ -27,7 +27,14 @@ Summary
 - POG size from a minimum of 3 proteins from 3 distinct viruses up to 673
   proteins from 378 virus. Most of the POGs are small with with a median size
   of 5 proteins from 5 viruses
-- no POG found in more than 37% of the 1,027 virus genomes
+- no POG found in more than 37% of the 1,027 virus genomes. Only 1% of the 
+  POGs are shared by more than a fifth of the genomes. Most distant
+  connections by different genes, e.g. ssDNA Microviridae and Inoviridae 
+  share a single different POG with dsDNA viruses
+- *Functional classification of POGs* Substantial fraction including 10 of the
+  top 100 larges POGs are completely uncharacterized.
+- *Taxon signature gens* In file S5. Top-quality POG signatures in Table 1.
+
 
 Personal Notes
 - *Bacillus* phage G, largest known phage genome - Two methods of viral
