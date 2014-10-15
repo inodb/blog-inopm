@@ -7,16 +7,17 @@ IPython Notebook on Uppmax with SSH Port Forwarding
 :summary: Set up SSH Port Forwarding for IPython Notebook on UPPMAX.
 
 `IPython Notebook <http://ipython.org/notebook.html>`_ is a great tool to
-easily make plots of your data. It also makes it very simple to keep a close
+analyze data. It does everything that you can do in python through a website
+interface including inline plots. It makes it very simple to keep a close
 connection between the commands you are running for an analysis and the
-documentation of the steps you did. Instead of copying all the commands you ran
-for analysis and explaining them, you can just run them straight from the
-notebook and describe the steps there. Rerunning a step is a simple
-``Shift+Enter``. This post assumes that you already know how to run ipython
-notebook. If not head to their `website <http://ipython.org/notebook.html>`_.
-Since I perform most of my analysis on an `UPPMAX cluster
-<http://www.uppmax.uu.se/the-milou-cluster>`_ it is useful for me to be able to
-use the notebook there. Couple of issues:
+documentation of those steps. Instead of copying and pasting all the commands
+to a separate document and explaining them there, you can just run them
+straight from the notebook and describe the steps in the same document.
+Rerunning a step is a simple ``Shift+Enter``. This post assumes that you
+already know how to run ipython notebook. If not, head to their `website
+<http://ipython.org/notebook.html>`_ and get addicted.  Since I perform most of
+my analysis on an `UPPMAX cluster <http://www.uppmax.uu.se/the-milou-cluster>`_
+it is useful for me to be able to use the notebook there. Couple of issues:
 
 - HTTP connections are not allowed to the cluster.
 - Running Firefox over ``ssh -X`` is very slow.
