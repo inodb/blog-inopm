@@ -58,7 +58,7 @@ And changed the profile ``ipython_notebook_config.py`` like:
 
     # Notebook config
     #c.NotebookApp.certfile = u''
-    c.NotebookApp.ip = '*'
+    c.NotebookApp.ip = 'localhost'
     c.NotebookApp.open_browser = False
     # add the hashed password you got from ipython below
     c.NotebookApp.password = u'sha1:bcd259ccf...[your hashed password here]'
