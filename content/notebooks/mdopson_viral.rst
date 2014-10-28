@@ -15,7 +15,8 @@ microbial Single Copy Genes (SCGs).
 
 Google docs
 ===========
-`Assembly stats`_
+- `Assembly stats`_
+- `Mapping stats`_
 
 
 Assemblies
@@ -121,6 +122,34 @@ After the assemblies all reads were mapped back against every merged assembly:
         done
         cd $d
     done
+
+Maping statistics were generated for all the reads and put on the google docs (`Mapping stats`_). To
+get the ``bowtie2`` mapping stats the newest slurm output file was parsed for all assemblies and 
+read files and then copied to the google docs.
+
+.. code-block:: bash
+
+     for s in $(ls P911_*/newbler/map/*/slurm-*.out | sort -r | tr '/' ' ' | rev | uniq -f1 | rev | tr ' ' '/' | sort);
+     do
+        cat $s | awk -v sample=`echo ${s} | cut -d/ -f4` -v OFS="\t" \
+        '{
+            if ($0 ~ "were paired") {a = $1;} 
+            if ($0 ~ ") aligned concordantly 0 times") { b = $1}
+            if ($0 ~ ") aligned concordantly exactly 1 time" ) {c = $1}
+            if ($0 ~ "aligned concordantly >1 times") { d=$1 }
+            if ($0 ~ ") aligned 0 times") {e=$1}
+            if ($0 ~ "% overall alignment rate") { f = $1 }
+        } END { print sample,a,b,c,d,e,f }'
+    done | xclip -sel clip
+
+Same for duplication rate as determined by MarkDuplicates.
+
+.. code-block:: bash
+
+    for s in $(ls P911_*/newbler/map/*/bowtie2/asm_pair-smd.metrics | sort);
+    do
+        cat $s  | awk '{if ($0 ~ "Unknown Library") {printf "%s%\n", $9}}' | tr '.' ','
+    done | xclip -sel clip
 
 Binning
 ========================
@@ -390,4 +419,5 @@ Create a POG HTML file for the report for easy access of the different POG plots
 .. _Lindgren: https://www.pdc.kth.se/resources/computers/lindgren
 .. _metassemble: https://github.com/inodb/metassemble
 .. _Assembly stats: https://docs.google.com/spreadsheet/ccc?key=0Ammr7cdGTJzgdG4tb2tfMGpsX1UxeWlYX0pEaFQ5RGc&usp=drive_web#gid=0
+.. _Mapping stats: https://docs.google.com/spreadsheet/ccc?key=0Ammr7cdGTJzgdG4tb2tfMGpsX1UxeWlYX0pEaFQ5RGc&usp=sharing#gid=2
 .. _complete example: https://concoct.readthedocs.org/en/latest/complete_example.html
