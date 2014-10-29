@@ -415,6 +415,38 @@ Create a POG HTML file for the report for easy access of the different POG plots
         echo "</body></html>"
     ) > report/pog_plots.html
 
+Instead of using ``blastp`` for the POG analysis, we now use HMMER to make alignments against HMM profiles of the MSA
+of each POG. First we have to build the database:
+
+.. code-block:: bash
+    for pog in /proj/b2010008/nobackup/database/pog/thousandgenomespogs/alignments/POG*.aln; do
+        hmmbuild /proj/b2010008/nobackup/database/pog/hmmer/3.1b1/profiles/$(basename $pog .aln).hmm $pog
+    done
+    cat /proj/b2010008/nobackup/database/pog/hmmer/3.1b1/profiles/*.hmm \
+        > /proj/b2010008/nobackup/database/pog/hmmer/3.1b1/databases/all_pog.hmm
+    hmmpress /proj/b2010008/nobackup/database/pog/hmmer/3.1b1/databases/all_pog.hmm
+
+Then the database can be used to align sequence against HMM profiles:
+
+.. code-block:: bash
+
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
+    d=`pwd`;
+    for p in P911_10{1,2,3,4,5,6}; do
+        cd $p/newbler/concoct
+        mkdir -p annotations/pog-annotations/ 
+        sbatch --output=annotations/pog-annotations/hmmscan_allVQ.out-slurm.out \
+            -A b2013127 -J pogall_hmmscan_$p -t 1-00:00:00 -p core -n 16 \
+            ~/bin/sbatch_job \
+            hmmscan \
+            -E 0.0001 \
+            --tblout annotations/pog-annotations/hmmer_allVQ.tsv \
+            /proj/b2010008/nobackup/database/pog/hmmer/3.1b1/databases/all_pog.hmm \
+            annotations/proteins/contigs_c10K.faa \
+            '>' annotations/pog-annotations/hmmscan_allVQ.out
+        cd $d
+    done
+
 .. _POG: http://www.ncbi.nlm.nih.gov/COG/
 .. _Lindgren: https://www.pdc.kth.se/resources/computers/lindgren
 .. _metassemble: https://github.com/inodb/metassemble
