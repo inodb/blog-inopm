@@ -419,6 +419,7 @@ Instead of using ``blastp`` for the POG analysis, we now use HMMER to make align
 of each POG. First we have to build the database:
 
 .. code-block:: bash
+
     for pog in /proj/b2010008/nobackup/database/pog/thousandgenomespogs/alignments/POG*.aln; do
         hmmbuild /proj/b2010008/nobackup/database/pog/hmmer/3.1b1/profiles/$(basename $pog .aln).hmm $pog
     done
