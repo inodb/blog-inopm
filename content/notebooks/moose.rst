@@ -61,4 +61,4 @@ and merged using Newbler::
     done
 
 **UPDATE 2014-09**
-Moved on with this project on [a separate GitHub repo](https://github.com/inodb/2014-09-haspeborg-moose-project).
+Moved on with this project on `a separate GitHub repo <https://github.com/inodb/2014-09-haspeborg-moose-project>`_.
