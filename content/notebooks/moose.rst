@@ -59,3 +59,6 @@ and merged using Newbler::
             ~/bin/sbatch_job bash -x $METASSEMBLE_DIR/scripts/assembly/merge-asm-newbler.sh newbler out_*/Contigs.fasta
         cd ..
     done
+
+**UPDATE 2014-09**
+Moved on with this project on [a separate GitHub repo](https://github.com/inodb/2014-09-haspeborg-moose-project).
