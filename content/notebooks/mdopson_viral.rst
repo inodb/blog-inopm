@@ -225,6 +225,23 @@ Run CONCOCT with different minimum contig lengths:
         cd $d
     done
 
+Extract fasta in separate bins for all cut offs:
+
+.. code-block:: bash
+
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
+    d=`pwd`;
+    for p in P911_10{1,2,3,4,5,6}; do
+        for co in 300 500 700 1000 2000 3000; do
+            mkdir -p $p/newbler/concoct/concoct-output-$co/bins/
+            python /glob/inod/src/CONCOCT/scripts/extract_fasta_bins.py \
+                $p/newbler/concoct/map/contigs_c10K.fa \
+                $p/newbler/concoct/concoct-output-$co/clustering_gt$co.csv \
+                --output_path $p/newbler/concoct/concoct-output-$co/bins/
+        done
+        cd $d
+    done
+
 Run prodigal and rpsblast for each sample:
 
 .. code-block:: bash
