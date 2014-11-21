@@ -465,6 +465,29 @@ Then the database can be used to align sequence against HMM profiles:
         cd $d
     done
 
+Blast all contigs against nr.
+
+.. code-block:: bash
+
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/assemblies
+    d=`pwd`
+    module load bioinfo-tools blast/2.2.29+
+    for p in P911_10{1,2,3,4,5,6}; do
+        cd $p/newbler/concoct
+        mkdir -p annotations/contig-blast-nt/
+        sbatch --output=annotations/contig-blast-nt/blastn-nt-contigs-10K.tsv-slurm.out \
+            -A b2013127 -J contig_blast_$p -t 1-00:00:00 -p core -n 16 \
+            ~/bin/sbatch_job \
+                cat cut_up_10K/contigs_c10K.fa '|' \
+                parallel --pipe --recstart "'>'" -N1000 \
+                blastn -outfmt \
+                "\"'6 qseqid sseqid evalue pident score qstart qend sstart send length slen'\"" \
+                -num_threads  1 -max_target_seqs 1 -evalue 0.0001 -query - \
+                -db /sw/data/uppnex/blast_databases/nt \
+                '>' annotations/contig-blast-nt/blastn-nt-contigs-10K.tsv
+        cd $d
+    done
+
 .. _POG: http://www.ncbi.nlm.nih.gov/COG/
 .. _Lindgren: https://www.pdc.kth.se/resources/computers/lindgren
 .. _metassemble: https://github.com/inodb/metassemble
