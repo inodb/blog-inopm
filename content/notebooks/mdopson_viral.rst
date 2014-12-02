@@ -507,9 +507,7 @@ Compare bins of one sample with bins of another sample:
     sbatch -A b2013127 -n 16 -p core -t 1-00:00:00 -J bac_vs_viral_bac \
         --output=planktonic_bacterial_vs_bacterial_from_viral-slurm.out \
         ~/bin/sbatch_job python ~/glob/github/CONCOCT-dnadiff-matrix/scripts/dnadiff_dist_matrix.py \
-        --skip_dnadiff \
         --fasta_names planktonic_bacterial_vs_bacterial_from_viral/fasta_names.txt \
-        --hclust_plot_file planktonic_bacterial_vs_bacterial_from_viral/hclust.pdf \
         planktonic_bacterial_vs_bacterial_from_viral $files $files2 \
     > planktonic_bacterial_vs_bacterial_from_viral/dist_matrix.tsv
 
