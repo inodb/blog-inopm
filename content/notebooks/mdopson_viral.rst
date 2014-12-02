@@ -510,7 +510,8 @@ Compare bins of one sample with bins of another sample:
         --skip_dnadiff \
         --fasta_names planktonic_bacterial_vs_bacterial_from_viral/fasta_names.txt \
         --hclust_plot_file planktonic_bacterial_vs_bacterial_from_viral/hclust.pdf \
-        planktonic_bacterial_vs_bacterial_from_viral $files $files2
+        planktonic_bacterial_vs_bacterial_from_viral $files $files2 \
+    > planktonic_bacterial_vs_bacterial_from_viral/dist_matrix.tsv
 
 .. _POG: http://www.ncbi.nlm.nih.gov/COG/
 .. _Lindgren: https://www.pdc.kth.se/resources/computers/lindgren
