@@ -488,6 +488,30 @@ Blast all contigs against nr.
         cd $d
     done
 
+Compare bins between samples
+============================
+Compare bins of one sample with bins of another sample:
+
+.. code-block:: bash
+    
+    cd /proj/b2013127/nobackup/projects/inod
+    mkdir -p planktonic_bacterial_vs_bacterial_from_viral
+    files=$(ls /proj/b2013127/nobackup/projects/xiaofen/planktonic/approved_bins/P1163_1{01,02,03,09,10,11}/approved_bins_fasta/*.fa)
+    files2=$(ls /proj/b2013127/nobackup/projects/xiaofen/planktonic/bacterial_bins_from_viral/P911_10{1,2,3,4,5,6}/*.fa)
+    # store fasta names
+    (
+        for f in $files; do echo $f | cut -d/ -f9,11 | sed 's/\//_bin_/' | sed 's/.fa//'; done
+        for f in $files2; do echo $f | cut -d/ -f9- | sed 's/\//_bin_/' | sed 's/.fa//'; done
+    ) > planktonic_bacterial_vs_bacterial_from_viral/fasta_names.txt
+    # run on cluster
+    sbatch -A b2013127 -n 16 -p core -t 1-00:00:00 -J bac_vs_viral_bac \
+        --output=planktonic_bacterial_vs_bacterial_from_viral-slurm.out \
+        ~/bin/sbatch_job python ~/glob/github/CONCOCT-dnadiff-matrix/scripts/dnadiff_dist_matrix.py \
+        --skip_dnadiff \
+        --fasta_names planktonic_bacterial_vs_bacterial_from_viral/fasta_names.txt \
+        --hclust_plot_file planktonic_bacterial_vs_bacterial_from_viral/hclust.pdf \
+        planktonic_bacterial_vs_bacterial_from_viral $files $files2
+
 .. _POG: http://www.ncbi.nlm.nih.gov/COG/
 .. _Lindgren: https://www.pdc.kth.se/resources/computers/lindgren
 .. _metassemble: https://github.com/inodb/metassemble
