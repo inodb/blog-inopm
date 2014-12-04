@@ -494,6 +494,7 @@ Compare bins of one sample with bins of another sample:
 
 .. code-block:: bash
     
+    module load bioinfo-tools MUMmer/3.23
     cd /proj/b2013127/nobackup/projects/inod
     mkdir -p planktonic_bacterial_vs_bacterial_from_viral
     files=$(ls /proj/b2013127/nobackup/projects/xiaofen/planktonic/approved_bins/P1163_1{01,02,03,09,10,11}/approved_bins_fasta/*.fa)
