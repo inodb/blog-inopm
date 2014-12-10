@@ -18,6 +18,24 @@ Google docs
 - `Assembly stats`_
 - `Mapping stats`_
 
+FastQC before SeqPrep
+=====================
+
+.. code-block:: bash
+
+    module load bioinfo-tools FastQC/0.11.1
+    mkdir -p /proj/b2013127/nobackup/projects/M.Dopson_13_05/fastqc
+    cd !$
+    for f in /proj/b2013127/INBOX/M.Dopson_13_05/*/*/*.fastq.gz; do
+        outf=$(echo $f | cut -d/ -f6,7)
+        mkdir -p $outf
+        sbatch -A b2013127 -t 01:00:00 -p core -n 1 -J fastqc_$outf \
+            --output=$outf-slurm.out \
+            ~/bin/sbatch_job \
+            time fastqc -o $outf --nogroup $f ${f/_1.fa/_2.fa}
+    done
+    
+
 SeqPrep
 =======
 Reads contained Illumina adapters. Use SeqPrep with default parameters to remove them:
@@ -29,7 +47,10 @@ Reads contained Illumina adapters. Use SeqPrep with default parameters to remove
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/seqprep
     for f in /proj/b2013127/INBOX/M.Dopson_13_05/*/*/*.fastq.gz; do
         outf=$(echo $f | cut -d/ -f6,7)
-        mkdir -p $outf; sbatch -A b2013127 -t 1-00:00:00 -p core -n 1 -J $outf ~/bin/sbatch_job \
+        mkdir -p $outf
+        sbatch -A b2014227 -t 1-00:00:00 -p core -n 1 -J seqprep_$outf \
+            --output=$outf-slurm.out \
+            ~/bin/sbatch_job \
             time SeqPrep -f $f -r ${f/_1.fa/_2.fa} \
                 -1 $outf/$(basename $f .fastq.gz).seqprep.fastq.gz \
                 -2 $outf/$(basename ${f/_1.fa/_2.fa} .fastq.gz).seqprep.fastq.gz
