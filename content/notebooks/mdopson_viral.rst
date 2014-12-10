@@ -18,6 +18,22 @@ Google docs
 - `Assembly stats`_
 - `Mapping stats`_
 
+SeqPrep
+=======
+Reads contained Illumina adapters. Use SeqPrep with default parameters to remove them:
+
+.. code-block:: bash
+
+    module load bioinfo-tools SeqPrep/2013-11-14
+    mkdir -p /proj/b2013127/nobackup/projects/M.Dopson_13_05/seqprep
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/seqprep
+    for f in /proj/b2013127/INBOX/M.Dopson_13_05/*/*/*.fastq.gz; do
+        outf=$(echo $f | cut -d/ -f6,7)
+        mkdir -p $outf; sbatch -A b2013127 -t 1-00:00:00 -p core -n 1 -J $outf ~/bin/sbatch_job \
+            time SeqPrep -f $f -r ${f/_1.fa/_2.fa} \
+                -1 $outf/$(basename $f .fastq.gz).seqprep.fastq.gz \
+                -2 $outf/$(basename ${f/_1.fa/_2.fa} .fastq.gz).seqprep.fastq.gz
+    done
 
 Assemblies
 ============
