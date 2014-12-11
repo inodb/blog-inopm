@@ -18,7 +18,7 @@ Google docs
 - `Assembly stats`_
 - `Mapping stats`_
 
-FastQC before SeqPrep
+FastQC
 =====================
 
 .. code-block:: bash
@@ -34,27 +34,49 @@ FastQC before SeqPrep
             ~/bin/sbatch_job \
             time fastqc -o $outf --nogroup $f ${f/_1.fa/_2.fa}
     done
-    
 
-SeqPrep
-=======
-Reads contained Illumina adapters. Use SeqPrep with default parameters to remove them:
+FastQC showed that reads contained Illumina adapters. Previously done assemblies did as well. This was confirmed by grepping for 
+adapters supplied with trimmomatic:
 
 .. code-block:: bash
 
-    module load bioinfo-tools SeqPrep/2013-11-14
-    mkdir -p /proj/b2013127/nobackup/projects/M.Dopson_13_05/seqprep
-    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/seqprep
-    for f in /proj/b2013127/INBOX/M.Dopson_13_05/*/*/*_1.fastq.gz; do
+    cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/
+    for f in /sw/apps/bioinfo/trimmomatic/0.32/milou/adapters/*.fa; do
+        echo $f
+        cat $f | awk '{if (NR % 2 == 0) {print $0}}' \
+            | parallel grep --color=always {} assemblies/P911_101/newbler/454AllContigs.fna
+    done
+    
+Turned out there were adapters in the assemblies from 
+``/sw/apps/bioinfo/trimmomatic/0.32/milou/adapters/TruSeq3-PE-2.fa``
+    
+
+Trimmomatic
+===========
+Adapter removal with SeqPrep removed adapters, but there was still bias in the bases at 
+the beginning and the end of the reads. Therefore we chose to remove adapters, do 
+quality trimming and crop reads with trimmomatic:
+
+.. code-block:: bash
+
+    module load trimmomatic/0.32
+    mkdir -p /proj/b2013127/nobackup/projects/M.Dopson_13_05/trimmomatic
+    cd !$
+    for f in /proj/b2013127/INBOX/M.Dopson_13_05/P911_101/140220_AC3UBFACXX/7_140220_AC3UBFACXX_P911_101_7_140220_AC3UBFACXX_P911_101_1.fastq.gz; do
         outf=$(echo $f | cut -d/ -f6,7)
         mkdir -p $outf
-        sbatch -A b2014227 -t 1-00:00:00 -p core -n 1 -J seqprep_$outf \
-            --output=$outf-slurm.out \
-            ~/bin/sbatch_job \
-            time SeqPrep -f $f -r ${f/_1.fa/_2.fa} \
-                -1 $outf/$(basename $f .fastq.gz).seqprep.fastq.gz \
-                -2 $outf/$(basename ${f/_1.fa/_2.fa} .fastq.gz).seqprep.fastq.gz
+        sbatch -A b2014227 -t 1-00:00:00 -p core -n 1 -J trimmomatic_$outf --output=$outf-slurm.out \
+            ~/bin/sbatch_job time java -jar /sw/apps/bioinfo/trimmomatic/0.32/milou/trimmomatic.jar \
+            PE --phred33 $f ${f/_1.fa/_2.fa} $outf/$(basename $f .fastq.gz).trimmomatic.fastq.gz \
+            $outf/$(basename $f _1.fastq.gz).single.fwd.trimmomatic.fastq \
+            $outf/$(basename $f _1.fastq.gz)_2.trimmomatic.fastq.gz  \
+            $outf/$(basename $f _1.fastq.gz).single.rev.trimmomatic.fastq \
+            ILLUMINACLIP:/sw/apps/bioinfo/trimmomatic/0.32/milou/adapters/TruSeq3-PE-2.fa:2:30:10 \
+            LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
     done
+
+FastQC after trimmomatic
+========================
 
 Assemblies
 ============
