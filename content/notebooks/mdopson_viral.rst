@@ -26,7 +26,7 @@ FastQC before SeqPrep
     module load bioinfo-tools FastQC/0.11.1
     mkdir -p /proj/b2013127/nobackup/projects/M.Dopson_13_05/fastqc
     cd !$
-    for f in /proj/b2013127/INBOX/M.Dopson_13_05/*/*/*.fastq.gz; do
+    for f in /proj/b2013127/INBOX/M.Dopson_13_05/*/*/*_1.fastq.gz; do
         outf=$(echo $f | cut -d/ -f6,7)
         mkdir -p $outf
         sbatch -A b2013127 -t 01:00:00 -p core -n 1 -J fastqc_$outf \
@@ -45,7 +45,7 @@ Reads contained Illumina adapters. Use SeqPrep with default parameters to remove
     module load bioinfo-tools SeqPrep/2013-11-14
     mkdir -p /proj/b2013127/nobackup/projects/M.Dopson_13_05/seqprep
     cd /proj/b2013127/nobackup/projects/M.Dopson_13_05/seqprep
-    for f in /proj/b2013127/INBOX/M.Dopson_13_05/*/*/*.fastq.gz; do
+    for f in /proj/b2013127/INBOX/M.Dopson_13_05/*/*/*_1.fastq.gz; do
         outf=$(echo $f | cut -d/ -f6,7)
         mkdir -p $outf
         sbatch -A b2014227 -t 1-00:00:00 -p core -n 1 -J seqprep_$outf \
