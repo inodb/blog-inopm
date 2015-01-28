@@ -49,7 +49,8 @@ Generated a hashed password with ``ipython``:
     import IPython.lib
     IPython.lib.passwd()
 
-And changed the profile ``ipython_notebook_config.py`` like:
+And changed the profile
+``~/.ipython/profile_nbserver/ipython_notebook_config.py`` like:
 
 .. code-block:: python
 
@@ -69,7 +70,7 @@ Run the notebook on milou with:
 
 .. code-block:: bash
 
-   [milou2] $ ipython notebook --profile=nbserver
+    [milou2] $ ipython notebook --profile=nbserver
 
 Then run the following command  on your local computer that forwards a local
 port (could be any port) to the remote port on milou2. I picked a common port
@@ -78,8 +79,26 @@ reasons.
 
 .. code-block:: bash
 
-   [local]  $ ssh -N -f -L localhost:8080:localhost:9990 inod@milou2.uppmax.uu.se
+    [local] $ ssh -N -f -L localhost:8080:localhost:9990 inod@milou2.uppmax.uu.se
     
 Now you should be able to open the notebook in your browser on
 ``http://localhost:8080``. Make sure it asks you for the password you provided.
 Enjoy!
+
+
+**UPDATE 2015-01-28**
+
+Uppmax only allows connections within Sweden. When you are not in Sweden you
+might therefore want to forward the port through an intermediate Swedish
+server. One can accomplish this by replacing the last command with:
+
+.. code-block:: bash
+
+   [local] $ ssh -t -L localhost:8080:localhost:9990 username@otherserver.se \
+             ssh -N -L localhost:9990:localhost:9990 inod@milou2.uppmax.uu.se 
+
+It basically runs the same port forwarding command on ``otherserver.se``. You
+need to add the ``-t`` parameter if you have a password protected ssh key on
+``otherserver.se``. That way you can type in the password. You therefore also
+don't return to the prompt on success. This command only works if for both
+``milou2`` and ``otherserver`` port 9990 is not in use by another program.
